@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('alert_logs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('alert_channel_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('incident_id')->constrained()->cascadeOnDelete();
+            $table->enum('event', ['down', 'recovery']);   // what triggered this alert
+            $table->enum('status', ['sent', 'failed', 'retrying'])->default('retrying');
+            $table->unsignedTinyInteger('attempts')->default(0);
+            $table->string('error_message')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('alert_logs');
+    }
+};

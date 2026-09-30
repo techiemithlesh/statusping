@@ -1,0 +1,98 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    working_dir: /var/www
+
+    volumes:
+      - .:/var/www
+
+    environment:
+      DB_HOST: mysql
+      REDIS_HOST: redis
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+
+  mysql:
+    image: mysql:8.0
+
+    environment:
+      MYSQL_DATABASE: statusping
+      MYSQL_USER: statusping
+      MYSQL_PASSWORD: "123456"
+      MYSQL_ROOT_PASSWORD: "phpmyadmin"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  redis:
+    image: redis:7-alpine
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    command: >
+      php artisan queue:work redis
+      --sleep=3
+      --tries=3
+      --max-time=3600
+
+    restart: unless-stopped
+
+    volumes:
+      - .:/var/www
+
+    environment:
+      DB_HOST: mysql
+      REDIS_HOST: redis
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+
+  nginx:
+    image: nginx:alpine
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - .:/var/www:ro
+      - ./docker/nginx:/etc/nginx/conf.d:ro
+
+    depends_on:
+      - app
+
+volumes:
+  mysql_data:
+  redis_data:
