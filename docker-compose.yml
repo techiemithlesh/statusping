@@ -1,6 +1,6 @@
 services:
 
-  app:
+  statusping:
     build:
       context: .
       dockerfile: Dockerfile
@@ -38,8 +38,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-
+  adminer: 
+    image: adminer
+    ports:
+      - 8081:8080  
+    depends_on:
+      - mysql
   redis:
     image: redis:7-alpine
 
@@ -84,14 +88,14 @@ services:
     image: nginx:alpine
 
     ports:
-      - "8080:80"
+      - "80:80"
 
     volumes:
       - .:/var/www:ro
       - ./docker/nginx:/etc/nginx/conf.d:ro
 
     depends_on:
-      - app
+      - statusping
 
 volumes:
   mysql_data:

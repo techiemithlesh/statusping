@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('avg_response_ms')->nullable();
             $table->timestamp('last_checked_at')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('project_key')->unique();  
+            $table->string('project_key')->unique()->nullable();  
             $table->timestamps();
         });
     }
