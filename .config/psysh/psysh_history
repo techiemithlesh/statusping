@@ -1,0 +1,8 @@
+>>> use App\Services\Checkers\CheckResult;
+>>> $r = CheckResult::up(120, 200);
+>>> $r->isUp;        // true
+>>> $r->isDown();
+use App\Services\Checkers\CheckResult;
+$r = CheckResult::up(120, 200);
+$r->isUp();
+$r->up();
