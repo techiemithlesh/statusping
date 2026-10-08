@@ -6,3 +6,21 @@ use App\Services\Checkers\CheckResult;
 $r = CheckResult::up(120, 200);
 $r->isUp();
 $r->up();
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+> config('queue.default')
+config('queue.default')
+config('queue.default')
+config('queue.default')
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Jobs\CheckMonitorJob::dispatch(\App\Models\Monitor::first());
+\App\Models\Ping::latest('checked_at')->first();
+$monitor = \App\Models\Monitor::first();
+$checker = app(\App\Services\Checkers\HttpChecker::class);
+$job = new \App\Jobs\CheckMonitorJob($monitor);
+\App\Models\Ping::latest('checked_at')->first();

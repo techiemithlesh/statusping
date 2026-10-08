@@ -15,4 +15,9 @@ class Monitor extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function pings()
+    {
+        return $this->hasMany(Ping::class);
+    }
 }
