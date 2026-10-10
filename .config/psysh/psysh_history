@@ -24,3 +24,46 @@ $monitor = \App\Models\Monitor::first();
 $checker = app(\App\Services\Checkers\HttpChecker::class);
 $job = new \App\Jobs\CheckMonitorJob($monitor);
 \App\Models\Ping::latest('checked_at')->first();
+$monitor = App\Models\Monitor::first();
+$ping = App\Models\Ping::create([
+    'monitor_id'       => $monitor->id,
+    'status'           => 'down',
+    'response_time_ms' => 0,
+    'status_code'      => null,
+    'error_message'    => 'Connection refused',
+    'checked_at'       => now(),
+]);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$monitor = App\Models\Monitor::first();
+$ping    = App\Models\Ping::first();
+$event = new App\Events\MonitorDownEvent($monitor, $ping);
+dump($event->monitor->name);
+dump($event->ping->id); 
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$monitor = App\Models\Monitor::first();
+$event = new App\Events\MonitorDownEvent($monitor, $ping);
+$ping    = App\Models\Ping::first();
+$event = new App\Events\MonitorDownEvent($monitor, $ping);
+dump($event->monitor->name);
+dump($event->ping->id);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Models\Incident::all();
+App\Models\Incident::truncate();
+App\Models\Incident::deleteAll();
+App\Models\Incident::delete();
+App\Models\Incident::destroy(1)
+$monitor = App\Models\Monitor::first();
+$ping = App\Models\Ping::first();
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$monitor = App\Models\Monitor::first();
+$ping = App\Models\Ping::first();
+$evnet = App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$evnet = App\Events\MonitorUpEvent::dispatch($monitor, $ping);

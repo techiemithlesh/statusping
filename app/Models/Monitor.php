@@ -20,4 +20,9 @@ class Monitor extends Model
     {
         return $this->hasMany(Ping::class);
     }
+
+    public function incidents()
+    {
+        return $this->hasMany(Incident::class);
+    }
 }
