@@ -81,8 +81,8 @@ HTTP Request every N minutes
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/statuspingcode
-cd statuspingcode
+git clone https://github.com/techiemithlesh/statusping.git
+cd statusping
 cp .env.example .env
 docker compose up -d
 docker compose exec app php artisan key:generate
@@ -109,7 +109,7 @@ alert_logs       — delivery history with retry status
 ## 📁 Project Structure
 
 ```
-statuspingcode/
+statusping/
 ├── app/
 │   ├── Console/Commands/DispatchMonitorChecks.php   ← scheduler entry point
 │   ├── Events/
