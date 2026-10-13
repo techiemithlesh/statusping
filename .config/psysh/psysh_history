@@ -67,3 +67,46 @@ $monitor = App\Models\Monitor::first();
 $ping = App\Models\Ping::first();
 $evnet = App\Events\MonitorDownEvent::dispatch($monitor, $ping);
 $evnet = App\Events\MonitorUpEvent::dispatch($monitor, $ping);
+App\Services\AlertChannelFactory::make('email');
+App\Services\AlertChannelFactory::make('unknown');
+App\Services\AlertChannelFactory::make('email');
+$monitor = App\Models\Monitor::first();
+$incident = App\Models\Incident::first();
+$incident = App\Models\Incident::first();
+$channel = App\Services\AlertChannelFactory::make('email');
+$channel->send($monitor, $incident);
+$channel->send($monitor, $incident);
+App\Models\AlertChannel::create([
+    'monitor_id'          => 1,
+    'type'                => 'email',
+    'config'              => ['address' => 'techie.mithlesh@gmail.com'],
+    'notify_on_down'      => true,
+    'notify_on_recovery'  => true,
+    'active'              => true,
+]);
+$monitor = App\Models\Monitor::first();
+$ping = App\Models\Ping::first();
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$monitor = App\Models\Monitor::first();
+$ping = App\Models\Ping::first();
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$monitor = App\Models\Monitor::first();
+$ping = App\Models\Ping::first();
+App\Events\MonitorDownEvent::dispatch($monitor, $ping);
+$monitor = App\Models\Monitor::first();
+$incident = App\Models\Incident::first();
+$channel = new App\Services\Channels\EmailChannel();
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);
+$monitor = App\Models\Monitor::first();
+$incident = App\Models\Incident::first();
+$channel = new App\Services\Channels\EmailChannel();
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);
+$monitor = App\Models\Monitor::first();
+$incident = App\Models\Incident::first();
+$channel = new App\Services\Channels\EmailChannel();
+$channel->send($monitor, $incident, ['address' => 'techie.mithlesh@gmail.com']);

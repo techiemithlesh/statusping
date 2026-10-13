@@ -25,4 +25,8 @@ class Monitor extends Model
     {
         return $this->hasMany(Incident::class);
     }
+
+    public function alertChannels(){
+        return $this->hasMany(AlertChannel::class);
+    }
 }
