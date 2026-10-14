@@ -14,7 +14,7 @@ Route::get('/health', function () {
 });
 
 
-Route::prefix('v1')->group(function(){
+Route::prefix('v1')->name('api.v1.')->group(function(){
     Route::get('/monitors/{monitor}/uptime', MonitorUptimeController::class);
     Route::apiResource('monitors', MonitorController::class);
 });

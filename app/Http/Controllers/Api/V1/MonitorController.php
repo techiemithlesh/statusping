@@ -13,10 +13,10 @@ class MonitorController extends Controller
      */
     public function index()
     {
-        $monitors = Monitor::paginate(10)->latest();
+        $monitors = Monitor::latest()->paginate(10);
 
         return response()->json([
-            'status'=>true,
+            'status' => true,
             'message' => "Monitor data feteched successfully !",
             'data' => $monitors
         ]);
@@ -27,7 +27,22 @@ class MonitorController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'url' => 'required|url',
+            'protocol' => 'required|in:http,https,tcp'
+        ]);
+
+        $validated['user_id']     = auth()->id() ?? 1;
+        $validated['project_key'] = 'proj-' . substr(str_shuffle('abcdefghijklmnop'), 0, 4) . '-' . rand(1000, 9999);
+
+        $monitor = Monitor::create($validated);
+
+        return response()->json([
+            'status' => true,
+            'message' => "Url is registered for monitoring",
+            'data' => $monitor
+        ], 201);
     }
 
     /**
