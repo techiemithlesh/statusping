@@ -85,12 +85,12 @@ git clone https://github.com/techiemithlesh/statusping.git
 cd statusping
 cp .env.example .env
 docker compose up -d
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate
-docker compose exec app php artisan db:seed  # creates demo monitor
+docker compose exec statusping php artisan key:generate
+docker compose exec statusping php artisan migrate
+docker compose exec statusping php artisan db:seed  # creates demo monitor
 ```
 
-Open http://localhost:8000 — you'll see your first monitor checking every minute.
+Open http://localhost:8080 — you'll see your first monitor checking every minute.
 
 ---
 
@@ -144,13 +144,21 @@ statusping/
 ## 🧪 Tests
 
 ```bash
-docker compose exec app php artisan test
+docker compose exec statusping php artisan test
 ```
 
 | Suite | Tests | Covers |
 |-------|-------|--------|
 | Unit  | AlertChannelFactory, CheckResult | Factory, Value Object |
 | Feature | CheckMonitorJob, MonitorDownAlert | HTTP check, Observer → Alert dispatch |
+
+## 📚 API Documentation
+
+```bash
+docker compose exec statusping php artisan l5-swagger:generate
+```
+
+Open the documentation at http://localhost:8080/api/documentation.
 
 ---
 
@@ -177,7 +185,7 @@ docker compose exec app php artisan test
 
 | Layer | Technology |
 |-------|-----------|
-| Backend | Laravel 11, PHP 8.3 |
+| Backend | Laravel 13, PHP 8.5 |
 | Queue | Laravel Horizon + Redis |
 | Database | MySQL 8 |
 | Real-time | Node.js + Socket.io |

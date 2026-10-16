@@ -7,6 +7,8 @@ services:
 
     working_dir: /var/www
     cpus: "4"
+    ports:
+      - "9000:9000"
     volumes:
       - .:/var/www
 
@@ -14,6 +16,7 @@ services:
       DB_HOST: mysql
       REDIS_HOST: redis
       PULSE_ENABLED: true
+      L5_SWAGGER_CONST_HOST: http://localhost:8080
     depends_on:
       mysql:
         condition: service_healthy
@@ -137,4 +140,3 @@ volumes:
   redis_data:
   prometheus_data:
   grafana_data:
-

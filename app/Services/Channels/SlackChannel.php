@@ -10,8 +10,10 @@ use Override;
 class SlackChannel implements AlertChannelInterface
 {
     
-    public function send(Monitor $monitor, Incident $incident): void
+    public function send(Monitor $monitor, Incident $incident, array $config): void
     {
         Log::info("Slack Channel Called");
     }
+
+    
 }

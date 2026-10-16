@@ -5,12 +5,19 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Monitor;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class MonitorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    #[OA\Get(
+        path: '/api/v1/monitors',
+        summary: 'List monitors',
+        tags: ['Monitors'],
+        responses: [new OA\Response(response: 200, description: 'Monitor list')],
+    )]
     public function index()
     {
         $monitors = Monitor::latest()->paginate(10);
@@ -25,6 +32,12 @@ class MonitorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    #[OA\Post(
+        path: '/api/v1/monitors',
+        summary: 'Create a monitor',
+        tags: ['Monitors'],
+        responses: [new OA\Response(response: 201, description: 'Monitor created')],
+    )]
     public function store(Request $request)
     {
         $validated = $request->validate([

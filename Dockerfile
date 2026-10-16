@@ -1,7 +1,7 @@
 # -----------------------------
 # Stage 1: Composer dependencies
 # -----------------------------
-FROM composer:2.7 AS vendor
+FROM composer:2 AS vendor
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN composer install \
 # -----------------------------
 # Stage 2: PHP-FPM
 # -----------------------------
-FROM php:8.3-fpm
+FROM php:8.5-fpm
 
 RUN apt-get update && apt-get install -y \
     libpng-dev \

@@ -1,0 +1,78 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Statusping an uptime Monitoring tool",
+        "description": "API Documentation for statusping",
+        "contact": {
+            "email": "techie.mithlesh@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Statusping API"
+        }
+    ],
+    "paths": {
+        "/api/v1/monitors": {
+            "get": {
+                "tags": [
+                    "Monitors"
+                ],
+                "summary": "List monitors",
+                "description": "Display a listing of the resource.",
+                "operationId": "7011373c0b11938e685b61c3f0c6ab6c",
+                "responses": {
+                    "200": {
+                        "description": "Monitor list"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Monitors"
+                ],
+                "summary": "Create a monitor",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "c63bd78e77bb794346ccd2513ebb0ce3",
+                "responses": {
+                    "201": {
+                        "description": "Monitor created"
+                    }
+                }
+            }
+        },
+        "/api/v1/monitors/{monitor}/uptime": {
+            "get": {
+                "tags": [
+                    "Monitors"
+                ],
+                "summary": "Get monitor uptime for the last 24 hours",
+                "description": "Handle the incoming request.",
+                "operationId": "f26e580946625b70b33d0657c2e79ba8",
+                "parameters": [
+                    {
+                        "name": "monitor",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uptime information"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Monitors",
+            "description": "Monitors"
+        }
+    ]
+}

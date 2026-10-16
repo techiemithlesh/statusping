@@ -26,13 +26,17 @@ Use the assertion in this table for each subject.
 
 Use a PHPUnit assertion only if no Pest expectation and no Laravel assertion exists for the subject.
 
-Assert each fact once. Do not assert a 200 status before `assertSee`, because `assertSee` already shows that the page rendered.
+Assert each fact once, but status and content are separate facts. `assertSee` passes on an error page that contains the text, so keep `assertOk()` alongside it when the status is part of the behavior.
 
 ## Named Response Assertions
 
 Use a named response assertion, such as `assertNotFound()`, rather than `assertStatus(404)`. A failure then identifies the broken contract. Laravel provides named assertions for commonly tested status codes.
 
 Keep one `expect()` chain on one subject. Start a new chain when the subject changes, or when the chain is difficult to read.
+
+## Format Expectations
+
+Use Pest's format expectations rather than regular expressions because they provide clearer failure messages. Pest covers email addresses, URLs, UUIDs, IP addresses, and other common formats, and each expectation supports `not` for the negative case.
 
 ## Assert a Known Value
 

@@ -6,12 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Models\Monitor;
 use App\Models\Ping;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class MonitorUpTimeController extends Controller
 {
     /**
      * Handle the incoming request.
      */
+    #[OA\Get(
+        path: '/api/v1/monitors/{monitor}/uptime',
+        summary: 'Get monitor uptime for the last 24 hours',
+        tags: ['Monitors'],
+        parameters: [
+            new OA\Parameter(
+                name: 'monitor',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer'),
+            ),
+        ],
+        responses: [new OA\Response(response: 200, description: 'Uptime information')],
+    )]
     public function __invoke(Monitor $monitor, Request $request)
     {
         
