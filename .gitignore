@@ -1,24 +1,33 @@
-*.log
-.DS_Store
+# Environment secrets
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies and generated assets
+Backend/vendor/
+**/node_modules/
+**/dist/
+**/public/build/
+**/public/hot
+**/public/storage
+
+# Laravel runtime data
+**/storage/*.key
+**/storage/pail
+**/bootstrap/cache/*.php
+**/.phpunit.cache/
+**/.phpunit.result.cache
+**/auth.json
+
+# Local tooling and operating-system files
+.DS_Store
 Thumbs.db
+**/.idea/
+**/.fleet/
+**/.nova/
+**/.vscode/
+**/.zed/
+**/.config/psysh/

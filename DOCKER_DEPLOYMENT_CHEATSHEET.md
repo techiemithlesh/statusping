@@ -2,6 +2,70 @@
 
 ---
 
+## StatusPing: Frontend + Laravel
+
+Run these commands from the repository root. In development, plain `docker compose up -d`
+starts both the Vite frontend and Laravel backend, plus Nginx, MySQL, Redis, and the queue.
+You can also start either app service by itself.
+
+### Development
+
+```bash
+cp Backend/.env.example Backend/.env  # first run only, if the file is missing
+docker compose up --build -d
+docker compose exec backend php artisan key:generate  # first run only
+docker compose exec backend php artisan migrate
+```
+
+Open http://localhost:8080 for the combined app. Development-only database credentials are
+provided by Compose defaults; do not use them for a deployed environment.
+Adminer is available at http://localhost:8081. Connect to server `mysql` using the
+development database credentials from the root `.env` or Compose defaults.
+
+To run only the backend API and its queue worker (plus the database and Redis dependencies)
+at http://localhost:8000:
+
+```bash
+docker compose up -d backend queue
+```
+
+Start only the frontend at http://localhost:5173:
+
+```bash
+docker compose up -d frontend
+```
+
+The frontend-only selection serves the UI without launching Laravel; API calls require a
+backend to be running. To use a backend elsewhere, set `VITE_API_TARGET` in the root `.env`
+to an address reachable from the frontend container, then recreate it with
+`docker compose up -d frontend`. To stop either service, run `docker compose stop frontend`
+or `docker compose stop backend queue`.
+
+### Production
+
+Copy `.env.example` to `.env`, replace both MySQL password values with strong unique
+passwords, and set `APP_URL` to the public URL. Generate a Laravel key, then paste the
+entire `base64:...` output into `APP_KEY` in `.env`:
+
+```bash
+docker run --rm php:8.5-cli php -r "echo 'base64:' . base64_encode(random_bytes(32)) . PHP_EOL;"
+```
+
+Start the production stack and apply migrations:
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+docker compose -f docker-compose.prod.yml exec backend php artisan migrate --force
+```
+
+The production Compose file requires `APP_KEY`, `MYSQL_PASSWORD`, and
+`MYSQL_ROOT_PASSWORD` to be set in the root `.env`. The app is available on
+`http://localhost:8080` by default; set `APP_PORT` to change the host port. Persistent
+database data is stored in the `mysql_data` volume. Do not use `docker compose down -v`
+unless you intend to delete that data.
+
+---
+
 ## 📦 DOCKER BASICS
 
 ### Images

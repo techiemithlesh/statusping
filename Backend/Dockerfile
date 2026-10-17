@@ -39,13 +39,16 @@ RUN docker-php-ext-install \
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
+RUN sed -i 's/^;clear_env = no/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf
+
 WORKDIR /var/www
 
 COPY --from=vendor /app/vendor ./vendor
 
 COPY --chown=www-data:www-data . .
 
-RUN chown -R www-data:www-data \
+RUN php artisan package:discover --ansi \
+    && chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache \
     && chmod -R 775 \

@@ -83,14 +83,20 @@ HTTP Request every N minutes
 ```bash
 git clone https://github.com/techiemithlesh/statusping.git
 cd statusping
-cp .env.example .env
-docker compose up -d
-docker compose exec statusping php artisan key:generate
-docker compose exec statusping php artisan migrate
-docker compose exec statusping php artisan db:seed  # creates demo monitor
+cp Backend/.env.example Backend/.env  # first run only
+docker compose up --build -d
+docker compose exec backend php artisan key:generate  # first run only
+docker compose exec backend php artisan migrate
+docker compose exec backend php artisan db:seed  # creates demo monitor
 ```
 
-Open http://localhost:8080 — you'll see your first monitor checking every minute.
+Open http://localhost:8080. The root Compose file runs the React/Vite frontend, Laravel,
+MySQL, Redis, a queue worker, and Nginx. For the production frontend image and secure
+deployment configuration, see `DOCKER_DEPLOYMENT_CHEATSHEET.md`.
+
+To run only the backend API and its database/cache dependencies, use
+`docker compose up -d backend queue` from the repository root; the API is available at
+http://localhost:8000. To run only the frontend, use `docker compose up -d frontend`.
 
 ---
 
@@ -136,7 +142,7 @@ statusping/
 │   └── Feature/
 │       ├── CheckMonitorJobTest.php
 │       └── MonitorDownAlertTest.php
-└── docker-compose.yml                              ← app + mysql + redis + horizon + scheduler
+└── docker-compose.yml                              ← frontend + Laravel + mysql + redis + queue + nginx
 ```
 
 ---
@@ -144,7 +150,7 @@ statusping/
 ## 🧪 Tests
 
 ```bash
-docker compose exec statusping php artisan test
+docker compose exec backend php artisan test
 ```
 
 | Suite | Tests | Covers |
@@ -155,7 +161,7 @@ docker compose exec statusping php artisan test
 ## 📚 API Documentation
 
 ```bash
-docker compose exec statusping php artisan l5-swagger:generate
+docker compose exec backend php artisan l5-swagger:generate
 ```
 
 Open the documentation at http://localhost:8080/api/documentation.
