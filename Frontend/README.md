@@ -40,12 +40,14 @@ To run Vite directly on your host instead, install dependencies with `npm ci` an
 
 | Page | Route | API calls |
 |---|---|---|
-| Monitors | `/` | `GET /monitors`, `POST /monitors`, `POST /monitors/{id}/check`, `PATCH /monitors/{id}/pause`, `PATCH /monitors/{id}/resume`, `GET /dashboard/summary` (optional) |
+| Marketing landing page | `/` | None |
+| Monitors | `/dashboard` | `GET /monitors`, `POST /monitors`, `POST /monitors/{id}/check`, `PATCH /monitors/{id}/pause`, `PATCH /monitors/{id}/resume`, `GET /dashboard/summary` (optional) |
 | Monitor detail | `/monitors/:id` | `GET`, `PUT`, `DELETE /monitors/{id}`, `GET /monitors/{id}/uptime`, `GET /monitors/{id}/pings?per_page=24`, `GET /monitors/{id}/incidents`, `GET /alert-channels`, `POST /monitors/{id}/alert-channels` |
 | Incidents | `/incidents` | `GET /incidents?status=ongoing\|resolved`, `GET /incidents/{id}` |
 | Alert channels | `/alert-channels` | `GET`, `POST /alert-channels`, `DELETE /alert-channels/{id}`, `POST /alert-channels/{id}/test` |
 | Public status page | `/status/:slug` | `GET /status/{slug}` (no login) |
-| Login | `/login` | `POST /auth/login`, `POST /auth/register`, `POST /auth/logout` |
+| Login / registration | `/login`, `/register` | `POST /auth/login`, `POST /auth/register`, `POST /auth/logout` |
+| Password recovery | `/forgot-password`, `/reset-password` | `POST /auth/forgot-password`, `POST /auth/reset-password` |
 
 All paths are relative to `/api/v1`.
 
@@ -89,11 +91,17 @@ The app unwraps `{ "data": ... }` automatically. Field names are mapped in
 Status codes the UI expects: `201` on create, `202` on "Check now", `204` on delete, `422` with
 `{ "errors": { "field": ["message"] } }` on validation errors (shown under each input).
 
-## Auth (Phase 4, Sanctum)
+## Authentication
 
-Login stores the token in `localStorage` and every request sends `Authorization: Bearer <token>`.
-Until auth exists, the dashboard works without a token. Once you add `auth:sanctum` to the routes,
-the API returns `401` and the page says "You need to log in first."
+The frontend stores the API token in `localStorage` and sends it as a bearer token on API requests.
+Dashboard, monitor, incident, and alert-channel routes redirect to `/login` unless a token exists.
+The landing page and public status pages remain accessible without signing in.
+
+The UI expects the Laravel API to implement the listed authentication endpoints and return a token
+from login and registration. Password recovery expects a reset URL with `token` and `email` query
+parameters. Authentication endpoints are frontend contracts only; implement them in Laravel.
+The backend currently exposes the monitor resource routes, so other screens will show the API
+response until their corresponding endpoints are implemented.
 
 ## Production build
 

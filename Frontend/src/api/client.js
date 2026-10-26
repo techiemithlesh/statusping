@@ -6,6 +6,7 @@
  */
 const BASE = '/api/v1';
 const TOKEN_KEY = 'statusping_token';
+const USER_KEY = 'statusping_user';
 
 export function getToken() {
   try {
@@ -21,6 +22,24 @@ export function setToken(value) {
     else localStorage.removeItem(TOKEN_KEY);
   } catch {
     // Storage blocked: the user simply stays logged out.
+  }
+}
+
+export function getUser() {
+  try {
+    const user = localStorage.getItem(USER_KEY);
+    return user ? JSON.parse(user) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function setUser(value) {
+  try {
+    if (value) localStorage.setItem(USER_KEY, JSON.stringify(value));
+    else localStorage.removeItem(USER_KEY);
+  } catch {
+    // User details are cosmetic; authentication still uses the token.
   }
 }
 

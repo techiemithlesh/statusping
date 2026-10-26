@@ -96,7 +96,7 @@ export default function Dashboard() {
   return (
     <div className="stack">
       <div>
-        <h1 className="page-title">Monitors</h1>
+        <h1 className="page-title">Monitor overview</h1>
         <p className="page-sub">Every website and API you are watching, checked on a schedule by your queue workers.</p>
       </div>
 

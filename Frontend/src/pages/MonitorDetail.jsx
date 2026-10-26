@@ -96,7 +96,7 @@ export default function MonitorDetail() {
     try {
       await api.delete(`/monitors/${id}`);
       toast('Monitor deleted.');
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setConfirmDelete(false);
       toast(errorMessage(err), 'error');
@@ -130,7 +130,7 @@ export default function MonitorDetail() {
 
   return (
     <div className="stack">
-      <Link to="/" className="btn" style={{ alignSelf: 'flex-start' }}>← All monitors</Link>
+      <Link to="/dashboard" className="btn" style={{ alignSelf: 'flex-start' }}>← All monitors</Link>
 
       {loading && <section className="panel"><Skeleton rows={2} /></section>}
       {fatal && <Notice error>{fatal}</Notice>}
