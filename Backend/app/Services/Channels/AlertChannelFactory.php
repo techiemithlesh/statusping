@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Channels;
 
-use App\Services\Channels\AlertChannelInterface;
-use App\Services\Channels\EmailChannel;
-use App\Services\Channels\SlackChannel;
 use InvalidArgumentException;
 
 class AlertChannelFactory
@@ -20,6 +17,7 @@ class AlertChannelFactory
        return match($channel){
           'email' => new EmailChannel(),
           'slack' => new SlackChannel(),
+          'discord' => new DiscordChannel(),
            default   => throw new InvalidArgumentException(
                 "Unknown alert channel: {$channel}"
             ), 

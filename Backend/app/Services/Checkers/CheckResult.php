@@ -21,8 +21,8 @@ readonly class CheckResult
         return new self(true, $responseTimeMs, $statusCode);
     }
 
-    public static function down(string $errorMessage, int $statusCode = 0): self
+    public static function down(string $errorMessage, int $statusCode = 0, int $responseTimeMs = 0): self
     {
-        return new self(false, 0, $statusCode, $errorMessage);
+        return new self(false, $responseTimeMs, $statusCode, $errorMessage);
     }
 }

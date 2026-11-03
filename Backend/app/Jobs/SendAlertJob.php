@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Incident;
 use App\Models\Monitor;
-use App\Services\AlertChannelFactory;
+use App\Services\Channels\AlertChannelFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 

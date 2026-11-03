@@ -6,7 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Monitor;
 use App\Models\Ping;
-use App\Services\Checkers\HttpChecker;
+use App\Services\Checkers\CheckerFactory;
 use Illuminate\Support\Facades\Log;
 
 class CheckMonitorJob implements ShouldQueue
@@ -24,11 +24,12 @@ class CheckMonitorJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(HttpChecker $httpChecker): void
+    public function handle(): void
     {
         Log::info("Checking monitor: {$this->monitor->name} ({$this->monitor->url})");
 
-        $result = $httpChecker->check($this->monitor);
+        $checker = CheckerFactory::make($this->monitor->protocol);
+        $result = $checker->check($this->monitor);
 
         $ping = Ping::create([
             'monitor_id'       => $this->monitor->id,

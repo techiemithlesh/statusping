@@ -43,7 +43,7 @@ class MonitorController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'url' => 'required|url',
-            'protocol' => 'required|in:http,https,tcp'
+            'protocol' => 'required|in:http,https,tcp,dns'
         ]);
 
         $validated['user_id']     = auth()->id() ?? 1;

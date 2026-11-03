@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('url');
-            $table->enum('protocol', ['http', 'https', 'tcp'])->default('https');
+            $table->enum('protocol', ['http', 'https', 'tcp', 'dns'])->default('https');
             $table->unsignedSmallInteger('interval_minutes')->default(1); // check every N minutes
             $table->unsignedSmallInteger('timeout_seconds')->default(10);
             $table->unsignedSmallInteger('confirm_failures')->default(2); // confirm before alerting

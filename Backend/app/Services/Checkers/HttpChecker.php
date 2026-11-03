@@ -6,7 +6,7 @@ use App\Services\Checkers\CheckResult;
 use App\Models\Monitor;
 use Illuminate\Support\Facades\Http;
 
-class HttpChecker
+class HttpChecker implements CheckerInterface
 {
     private const TIMEOUT_SECONDS = 10;
     /**
