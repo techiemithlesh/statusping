@@ -53,5 +53,7 @@ class CheckMonitorJob implements ShouldQueue
         ]);
 
         Log::info("Monitor updated: ID {$this->monitor->id}, Status: {$this->monitor->status}, Last Checked At: {$this->monitor->last_checked_at}");
+
+        Monitor::dispatchEventsFor($this->monitor, $ping);
     }
 }

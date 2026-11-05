@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('alert_channels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('monitor_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['slack', 'email', 'webhook']);
+            $table->enum('type', ['slack', 'email', 'webhook', 'discord', 'telegram', 'sms', 'whatsapp']);
             $table->json('config');  // {"webhook_url":"..."} or {"email":"..."} or {"url":"...","secret":"..."}
             $table->boolean('notify_on_down')->default(true);
             $table->boolean('notify_on_recovery')->default(true);

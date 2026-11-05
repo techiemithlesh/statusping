@@ -7,18 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class AlertLogs extends Model
 {
     protected $fillable = [
-        'monitor_id',
-        'type',
-        'config',
-        'notify_on_down',
-        'notify_on_recovery',
-        'active',
+        'alert_channel_id',
+        'incident_id',
+        'event',
+        'status',
+        'attempts',
+        'error_message',
     ];
+
+    
 
     protected $casts = [
-        'type' => 'enum:App\Enums\AlertType',
+        'event' => 'enum:down,up',
     ];
 
+    public function alertChannel()
+    {
+        return $this->belongsTo(AlertChannel::class);
+    }
+    
     public function monitor()
     {
         return $this->belongsTo(Monitor::class);

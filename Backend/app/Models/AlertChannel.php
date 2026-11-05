@@ -23,4 +23,9 @@ class AlertChannel extends Model
     public function monitor(){
         return $this->belongsTo(Monitor::class);
     }
+
+    public function alertLogs()
+    {
+        return $this->hasMany(AlertLogs::class);
+    }
 }
