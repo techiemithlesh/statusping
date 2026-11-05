@@ -98,6 +98,23 @@ To run only the backend API and its database/cache dependencies, use
 `docker compose up -d backend queue` from the repository root; the API is available at
 http://localhost:8000. To run only the frontend, use `docker compose up -d frontend`.
 
+### Local monitor scheduling
+
+The scheduler dispatches checks every minute for active monitors whose configured
+`interval_minutes` have elapsed. With the root Docker Compose stack running, start
+the scheduler in a terminal:
+
+```bash
+docker compose exec backend php artisan schedule:work
+```
+
+The `queue` service processes the dispatched check jobs. To verify the scheduler
+registration without waiting for the next minute, run
+`docker compose exec backend php artisan schedule:list`; to dispatch due checks
+immediately, run `docker compose exec backend php artisan monitors:dispatch`.
+Alert and incident jobs are triggered by monitor state changes, not scheduled
+independently.
+
 ---
 
 ## 🗄 Database Schema

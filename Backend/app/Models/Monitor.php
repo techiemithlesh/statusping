@@ -12,6 +12,10 @@ class Monitor extends Model
 
     protected $fillable = ['name', 'url', 'protocol', 'interval_minutes', 'timeout_seconds', 'confirm_failures', 'active', 'status', 'uptime_percentage', 'avg_response_ms', 'last_checked_at', 'user_id', 'project_key'];
 
+    protected $casts = [
+        'last_checked_at' => 'datetime',
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -28,5 +32,9 @@ class Monitor extends Model
 
     public function alertChannels(){
         return $this->hasMany(AlertChannel::class);
+    }
+
+    public function alertLogs(){
+        return $this->hasMany(AlertLogs::class);
     }
 }

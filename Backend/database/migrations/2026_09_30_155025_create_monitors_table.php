@@ -28,7 +28,11 @@ return new class extends Migration
             $table->string('project_key')->unique()->nullable();  
             $table->timestamps();
         });
+
+        
     }
+
+
 
     /**
      * Reverse the migrations.

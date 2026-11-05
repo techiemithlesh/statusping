@@ -4,10 +4,12 @@ namespace App\Listeners;
 
 use App\Events\MonitorDownEvent;
 use App\Events\MonitorUpEvent;
+use App\Models\AlertLogs;
 use App\Models\Incident;
 use App\Models\Monitor;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\DB;
 
 class IncidentWatcher implements ShouldQueue
 {
@@ -41,17 +43,30 @@ class IncidentWatcher implements ShouldQueue
     
     private function handleDown(Monitor $monitor) : void
     {
-        $alreadyDown = Incident::where('monitor_id', $monitor->id)->where('status', 'ongoing')->exists();
+        DB::transaction(function () use ($monitor): void {
+            $alreadyDown = Incident::where('monitor_id', $monitor->id)
+                ->where('status', 'ongoing')
+                ->exists();
 
-        if($alreadyDown) {
-            return;
-        }
+            if ($alreadyDown) {
+                return;
+            }
 
-        Incident::create([
-            'monitor_id' => $monitor->id,
-            'started_at' => now(),
-            'status' => 'ongoing',
-        ]);
+            Incident::create([
+                'monitor_id' => $monitor->id,
+                'started_at' => now(),
+                'status' => 'ongoing',
+            ]);
+
+            AlertLogs::create([
+                'monitor_id' => $monitor->id,
+                'type' => 'incident',
+                'config' => json_encode(['message' => 'Monitor is down']),
+                'notify_on_down' => true,
+                'notify_on_recovery' => false,
+                'active' => true,
+            ]);
+        });
     }
 
     private function handleUp(Monitor $monitor) : void {
