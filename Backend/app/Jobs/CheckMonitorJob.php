@@ -7,6 +7,8 @@ use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Monitor;
 use App\Models\Ping;
 use App\Services\Checkers\CheckerFactory;
+use App\Services\Checkers\Decorator\LoggingCheckerDecorator;
+use App\Services\Checkers\Decorator\RetryDecorator;
 use Illuminate\Support\Facades\Log;
 
 class CheckMonitorJob implements ShouldQueue
@@ -28,7 +30,9 @@ class CheckMonitorJob implements ShouldQueue
     {
         Log::info("Checking monitor: {$this->monitor->name} ({$this->monitor->url})");
 
-        $checker = CheckerFactory::make($this->monitor->protocol);
+        $checker = new LoggingCheckerDecorator(
+            new RetryDecorator(CheckerFactory::make($this->monitor->protocol))
+        );
         $result = $checker->check($this->monitor);
 
         $ping = Ping::create([

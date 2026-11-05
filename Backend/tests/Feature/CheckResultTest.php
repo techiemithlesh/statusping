@@ -38,7 +38,7 @@ test('checker strategy can be used through its interface', function () {
     ]);
 
     $checker = CheckerFactory::make('https');
-    $result = $checker->check(new Monitor(['url' => 'https://example.com']));
+    $result = $checker->check(new Monitor(['url' => 'https://medbandhu.com/']));
 
     expect($checker)->toBeInstanceOf(CheckerInterface::class);
     expect($result->isUp)->toBeTrue();
