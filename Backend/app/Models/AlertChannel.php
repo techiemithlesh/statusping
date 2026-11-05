@@ -26,6 +26,6 @@ class AlertChannel extends Model
 
     public function alertLogs()
     {
-        return $this->hasMany(AlertLogs::class);
+        return $this->hasManyThrough(AlertLogs::class, Monitor::class);
     }
 }

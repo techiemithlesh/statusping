@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\MonitorDownEvent;
 use App\Events\MonitorUpEvent;
+use App\Jobs\SendAlertJob;
 use App\Models\AlertLogs;
 use App\Models\Incident;
 use App\Models\Monitor;
@@ -52,20 +53,22 @@ class IncidentWatcher implements ShouldQueue
                 return;
             }
 
-            Incident::create([
+           $incident = Incident::create([
                 'monitor_id' => $monitor->id,
                 'started_at' => now(),
                 'status' => 'ongoing',
             ]);
 
-            AlertLogs::create([
-                'monitor_id' => $monitor->id,
-                'type' => 'incident',
-                'config' => json_encode(['message' => 'Monitor is down']),
-                'notify_on_down' => true,
-                'notify_on_recovery' => false,
-                'active' => true,
-            ]);
+            // AlertLogs::create([
+            //     'monitor_id' => $monitor->id,
+            //     'type' => 'incident',
+            //     'config' => json_encode(['message' => 'Monitor is down']),
+            //     'notify_on_down' => true,
+            //     'notify_on_recovery' => false,
+            //     'active' => true,
+            // ]);
+
+            SendAlertJob::dispatch($monitor, $incident, 'down')->afterCommit();
         });
     }
 

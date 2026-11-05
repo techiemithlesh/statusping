@@ -16,11 +16,6 @@ class AlertLogs extends Model
     ];
 
     
-
-    protected $casts = [
-        'event' => 'enum:down,up',
-    ];
-
     public function alertChannel()
     {
         return $this->belongsTo(AlertChannel::class);
