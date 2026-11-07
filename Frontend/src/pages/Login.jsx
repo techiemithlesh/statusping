@@ -38,16 +38,23 @@ export default function Login() {
 
   async function submit(e) {
     e.preventDefault();
+    if (isRegister && form.password !== form.password_confirmation) {
+      setErrors({ password_confirmation: ['Passwords do not match.'] });
+      setError('Please make sure your passwords match.');
+      setSuccess(null);
+      return;
+    }
+
     setBusy(true);
     setErrors({});
     setError(null);
     setSuccess(null);
     try {
       if (isForgot) {
-        await api.post('/auth/forgot-password', { email: form.email });
+        await api.authPost('/auth/forgot-password', { email: form.email });
         setSuccess('If an account exists for that email, we’ve sent a password reset link.');
       } else if (isReset) {
-        await api.post('/auth/reset-password', {
+        await api.authPost('/auth/reset-password', {
           email: form.email,
           token: searchParams.get('token') || '',
           password: form.password,
@@ -58,8 +65,17 @@ export default function Login() {
       } else {
         const body = isLogin
           ? { email: form.email, password: form.password }
-          : form;
-        const response = await api.post(isLogin ? '/auth/login' : '/auth/register', body);
+          : { name: form.name, email: form.email, password: form.password };
+        let response;
+        if (isLogin) {
+          response = await api.authPost('/auth/login', body);
+        } else {
+          await api.authPost('/auth/create', body);
+          response = await api.authPost('/auth/login', {
+            email: form.email,
+            password: form.password,
+          });
+        }
         const data = response?.data ?? response;
         const token = data?.token ?? data?.access_token;
         if (!token) throw new Error('The API response did not include an authentication token.');

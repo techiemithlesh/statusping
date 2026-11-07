@@ -187,6 +187,7 @@ class AuthController extends Controller
             'status' => true,
             'message' => 'Login successful',
             'token' => $token,
+            'user' => $user,
         ]);
     }
 

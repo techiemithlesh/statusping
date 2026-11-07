@@ -17,7 +17,7 @@ export default function Layout() {
 
   async function logout() {
     try {
-      await api.post('/auth/logout');
+      await api.authPost('/auth/logout');
     } catch {
       // The local session can still be cleared if the token has expired.
     }

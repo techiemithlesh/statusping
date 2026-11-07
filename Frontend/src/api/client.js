@@ -1,5 +1,5 @@
 /**
- * The only place that talks to the Laravel API (/api/v1).
+ * The only place that talks to the Laravel API.
  * - Adds JSON + Bearer token headers
  * - Unwraps API Resource responses ({ data: ... })
  * - Turns 401 / 404 / 422 into readable messages
@@ -44,16 +44,17 @@ export function setUser(value) {
 }
 
 export class ApiError extends Error {
-  constructor(status, body, method, path) {
+  constructor(status, body, method, path, base = BASE) {
     super(`${method} ${path} failed with ${status}`);
     this.status = status;
     this.body = body;
     this.method = method;
     this.path = path;
+    this.base = base;
   }
 }
 
-async function request(method, path, body) {
+async function request(method, path, body, base = BASE) {
   const headers = { Accept: 'application/json' };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   const token = getToken();
@@ -61,13 +62,13 @@ async function request(method, path, body) {
 
   let res;
   try {
-    res = await fetch(BASE + path, {
+    res = await fetch(base + path, {
       method,
       headers,
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
   } catch {
-    throw new ApiError(0, null, method, path);
+    throw new ApiError(0, null, method, path, base);
   }
 
   if (res.status === 204) return null;
@@ -79,7 +80,7 @@ async function request(method, path, body) {
     // Empty or non-JSON body.
   }
 
-  if (!res.ok) throw new ApiError(res.status, data, method, path);
+  if (!res.ok) throw new ApiError(res.status, data, method, path, base);
   return data;
 }
 
@@ -92,6 +93,7 @@ export function unwrap(response) {
 export const api = {
   get: (path) => request('GET', path).then(unwrap),
   post: (path, body = {}) => request('POST', path, body),
+  authPost: (path, body = {}) => request('POST', path, body, '/api'),
   put: (path, body = {}) => request('PUT', path, body).then(unwrap),
   patch: (path, body = {}) => request('PATCH', path, body).then(unwrap),
   delete: (path) => request('DELETE', path),
@@ -99,12 +101,12 @@ export const api = {
 
 export function errorMessage(err) {
   if (!(err instanceof ApiError)) return err?.message || 'Something went wrong. Check the browser console.';
-  const where = `${err.method} /api/v1${err.path}`;
+  const where = `${err.method} ${err.base}${err.path}`;
   switch (err.status) {
     case 0:
       return 'Could not reach the server. Is Docker running, and is VITE_API_TARGET correct?';
     case 401:
-      return 'You need to log in first.';
+      return err.body?.message || 'You need to log in first.';
     case 403:
       return 'You are not allowed to do this.';
     case 404:

@@ -46,10 +46,10 @@ To run Vite directly on your host instead, install dependencies with `npm ci` an
 | Incidents | `/incidents` | `GET /incidents?status=ongoing\|resolved`, `GET /incidents/{id}` |
 | Alert channels | `/alert-channels` | `GET`, `POST /alert-channels`, `DELETE /alert-channels/{id}`, `POST /alert-channels/{id}/test` |
 | Public status page | `/status/:slug` | `GET /status/{slug}` (no login) |
-| Login / registration | `/login`, `/register` | `POST /auth/login`, `POST /auth/register`, `POST /auth/logout` |
-| Password recovery | `/forgot-password`, `/reset-password` | `POST /auth/forgot-password`, `POST /auth/reset-password` |
+| Login / registration | `/login`, `/register` | `POST /api/auth/login`, `POST /api/auth/create`, `POST /api/auth/logout` |
+| Password recovery | `/forgot-password`, `/reset-password` | `POST /api/auth/forgot-password`, `POST /api/auth/reset-password` |
 
-All paths are relative to `/api/v1`.
+Monitor, incident, and alert-channel API paths are relative to `/api/v1`. Authentication paths use `/api/auth`.
 
 **Endpoints you have not built yet do not crash the app.** Each section shows a yellow note like
 `GET /api/v1/monitors/1/pings returned 404. Either this endpoint is not built yet...`.
@@ -84,8 +84,8 @@ The app unwraps `{ "data": ... }` automatically. Field names are mapped in
 { "data": { "page": "Example Co",
   "services": [ { "name": "Main Website", "status": "up", "uptime_90d": 99.9, "history": ["up","up","down"] } ] } }
 
-// POST /auth/login
-{ "token": "1|abc...", "user": { "id": 1, "name": "..." } }
+// POST /api/auth/login
+{ "status": true, "token": "1|abc...", "user": { "id": 1, "name": "..." } }
 ```
 
 Status codes the UI expects: `201` on create, `202` on "Check now", `204` on delete, `422` with
@@ -97,11 +97,10 @@ The frontend stores the API token in `localStorage` and sends it as a bearer tok
 Dashboard, monitor, incident, and alert-channel routes redirect to `/login` unless a token exists.
 The landing page and public status pages remain accessible without signing in.
 
-The UI expects the Laravel API to implement the listed authentication endpoints and return a token
-from login and registration. Password recovery expects a reset URL with `token` and `email` query
-parameters. Authentication endpoints are frontend contracts only; implement them in Laravel.
-The backend currently exposes the monitor resource routes, so other screens will show the API
-response until their corresponding endpoints are implemented.
+Login and registration use the Laravel `/api/auth/login` and `/api/auth/create` endpoints.
+After creating an account, the UI signs in with those credentials and stores the returned token.
+Password recovery expects a reset URL with `token` and `email` query parameters and requires the
+corresponding Laravel endpoints to be implemented.
 
 ## Production build
 
