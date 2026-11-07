@@ -12,7 +12,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                  */
-                'api' => 'api/documentation',
+                'api' => 'api/docs',
             ],
             'paths' => [
                 /*
@@ -54,7 +54,7 @@ return [
             /*
              * Route for accessing parsed swagger annotations.
              */
-            'docs' => 'docs',
+            'docs' => 'api/docs/spec',
 
             /*
              * Route for Oauth2 authentication callback.
@@ -190,6 +190,11 @@ return [
         */
         'securityDefinitions' => [
             'securitySchemes' => [
+                'sanctum' => [
+                    'type' => 'http',
+                    'scheme' => 'bearer',
+                    'bearerFormat' => 'Sanctum token',
+                ],
                 /*
                  * Examples of Security schemes
                  */

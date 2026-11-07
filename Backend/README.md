@@ -181,7 +181,7 @@ docker compose exec backend php artisan test
 docker compose exec backend php artisan l5-swagger:generate
 ```
 
-Open the documentation at http://localhost:8080/api/documentation.
+Open the documentation at http://localhost:8080/api/docs.
 
 ---
 

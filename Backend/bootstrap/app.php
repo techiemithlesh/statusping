@@ -18,7 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
             ->withoutOverlapping();
     })
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'role' => \App\Http\Middleware\RoleMiddleWare::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

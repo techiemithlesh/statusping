@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Events\MonitorDownEvent;
 use App\Events\MonitorUpEvent;
 use App\Listeners\IncidentWatcher;
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        User::observe(UserObserver::class);
     }
 }

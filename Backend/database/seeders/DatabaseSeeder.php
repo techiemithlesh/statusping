@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
+            RoleSeeder::class,    // 2 roles: admin, user
             UserSeeder::class,    // 1 lakh users
             MonitorSeeder::class, // medbandhu wala
             LoadTestSeeder::class, // 1000 monitors + 10L pings

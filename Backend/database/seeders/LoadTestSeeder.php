@@ -15,15 +15,16 @@ class LoadTestSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::first() ?? User::factory()->create();
+       $user = User::get()->random()
+            ->id;
 
         $this->command->info('Creating 1000 monitors...');
-        Monitor::factory()->count(1000)->create(['user_id' => $user->id]);
+        Monitor::factory()->count(1000)->create(['user_id' => $user]);
 
         $monitorIds = Monitor::pluck('id')->toArray();
         $this->command->info('✅ Monitors done: ' . count($monitorIds));
 
-        $total     = 1_000_000;
+        $total     = 1_000_00;
         $chunkSize = 10_000;
         $inserted  = 0;
 
